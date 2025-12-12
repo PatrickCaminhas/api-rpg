@@ -12,6 +12,9 @@ public class Heroi implements Combatente {
     private int forca = 3;
     private int cura = 2;
     private int mana = 10;
+    private int moedas = 0;
+    private int experiencia = 0;
+    private int nivel = 1;
     private List<String> magias = new ArrayList<String>(List.of("Bola de fogo", "Dardo de gelo", "Vento Cortante"));
 
     public Heroi(String nomeHeroi) {
@@ -31,15 +34,19 @@ public class Heroi implements Combatente {
                 return "Dano Critico! Dano: " + (this.forca * 2) + " pontos de vida";
             } else if (dado >= 15 && dado <= 19) {
                 alvo.receberDano((int) Math.round(this.forca * 1.5));
+                this.verificaMorte(alvo);
                 return "Ataque forte! Dano: " + (int) Math.round(this.forca * 1.5) + " pontos de vida";
             } else if (dado >= 10 && dado <= 14) {
                 alvo.receberDano(this.forca);
+                this.verificaMorte(alvo);
                 return "Ataque normal. Dano: " + this.forca + " pontos de vida";
             } else if (dado >= 4 && dado <= 9) {
                 alvo.receberDano((int) Math.round(this.forca * 0.5));
+                this.verificaMorte(alvo);
                 return "Ataque fraco. Dano: " + (int) Math.round(this.forca * 0.5) + " pontos de vida";
             } else if (dado == 2 || dado == 3) {
                 alvo.receberDano(1);
+                this.verificaMorte(alvo);
                 return "Passou de raspão! Dano: 1 ponto de vida";
             } else if (dado == 1) {
                 return "Erro critico! Dano: 0 pontos de vida";
@@ -49,18 +56,23 @@ public class Heroi implements Combatente {
         } else if (ataque == "Pesado") {
             if (dado == 20) {
                 alvo.receberDano((int) Math.round(this.forca * 2 * 1.5));
+                this.verificaMorte(alvo);
                 return "Dano Critico! Dano: " + (int) Math.round((this.forca * 2 * 1.5)) + " pontos de vida";
             } else if (dado >= 18 && dado <= 19) {
                 alvo.receberDano((int) Math.round(this.forca * 1.5 * 1.5));
+                this.verificaMorte(alvo);
                 return "Ataque com precisão! Dano: " + (int) Math.round(this.forca * 1.5 * 1.5) + " pontos de vida";
             } else if (dado >= 15 && dado <= 17) {
                 alvo.receberDano((int) Math.round(this.forca * 1.5 * 1.5));
+                this.verificaMorte(alvo);
                 return "Ataque pesado normal. Dano: " + (int) Math.round(this.forca * 1.5) + " pontos de vida";
             } else if (dado >= 6 && dado <= 14) {
                 alvo.receberDano((int) Math.round(this.forca * 0.5 * 1.5));
+                this.verificaMorte(alvo);
                 return "Ataque torto. Dano: " + (int) Math.round(this.forca * 0.5 * 1.5) + " pontos de vida";
             } else if (dado >= 2 || dado <= 5) {
                 alvo.receberDano(1);
+                this.verificaMorte(alvo);
                 return "Passou de raspão! Dano: 1 ponto de vida";
             } else if (dado == 1) {
                 return "Erro critico! Dano: 0 pontos de vida";
@@ -73,12 +85,15 @@ public class Heroi implements Combatente {
                 return "Jogou uma pedra gigante! Dano: " + (int) Math.round((this.forca * 2 * 1.1)) + " pontos de vida";
             } else if (dado >= 15 && dado <= 19) {
                 alvo.receberDano((int) Math.round(this.forca * 1.5 * 1.1));
+                this.verificaMorte(alvo);
                 return "Jogou uma adaga! Dano: " + (int) Math.round(this.forca * 1.5 * 1.1) + " pontos de vida";
             } else if (dado >= 10 && dado <= 14) {
                 alvo.receberDano((int) Math.round(this.forca * 0.8));
+                this.verificaMorte(alvo);
                 return "Jogou uma cadeira. Dano: " + (int) Math.round(this.forca * 1.1) + " pontos de vida";
             } else if (dado >= 4 && dado <= 9) {
                 alvo.receberDano((int) Math.round(this.forca * 0.4));
+                this.verificaMorte(alvo);
                 return "Jogou uma padra de mal jeito. Dano: " + (int) Math.round(this.forca * 0.5 * 1.1)
                         + " pontos de vida";
             } else if (dado == 2 || dado == 3) {
@@ -90,7 +105,26 @@ public class Heroi implements Combatente {
                 return "Erro, valor incorreto.";
             }
         }
+
     }
+
+    private void verificaMorte(Combatente alvo) {
+        if (alvo.getVida() <= 0) {
+            aumentarExperiencia(20);
+        }
+    }
+
+    public void aumentarExperiencia(int experiencia) {
+        this.experiencia += experiencia;
+        if (this.experiencia >= 100) {
+            this.experiencia -= 100;
+            this.nivel += 1;
+            this.forca +=1;
+            this.mana +=1;
+        }
+    }
+
+
 
     public String magia(Combatente alvo, int magia) {
         if (alvo.getVida() <= 0) {
@@ -124,7 +158,7 @@ public class Heroi implements Combatente {
     public String setCura(String metodo) {
         this.vida += 5;
         if (metodo == "atirar") {
-            
+
             return "Recebeu uma cura e aumentou a vida em 5";
         } else if (metodo == "magia") {
             return "Se curou usando magia";
@@ -132,7 +166,8 @@ public class Heroi implements Combatente {
             this.vida += 5;
             return "Achou uma poção, ao tomar aumentou a vida em 5";
         }
-    }   
+    }
+
     public String setCura(String metodo, int valor) {
         this.vida += valor;
         return "Se curou usando magia";
@@ -206,7 +241,7 @@ public class Heroi implements Combatente {
                 + " poções de cura no inventário.";
     }
 
-    public String setMana(int valor){
+    public String setMana(int valor) {
         this.mana -= valor;
         return "Mana atual é: " + this.mana;
     }
