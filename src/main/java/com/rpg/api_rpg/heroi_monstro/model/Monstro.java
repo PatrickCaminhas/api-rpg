@@ -6,8 +6,8 @@ import java.util.Random;
 
 public class Monstro implements Combatente {
     private String nome;
-    private int vida = 10;
-    private int forca = 3;
+    private int vida = 120;
+    private int forca = 6;
     private int mana = 0;
 
     public Monstro() {

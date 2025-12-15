@@ -8,9 +8,9 @@ import java.util.Random;
 public class Heroi implements Combatente {
 
     private String nome;
-    private int vida = 10;
-    private int forca = 3;
-    private int cura = 2;
+    private int vida = 100;
+    private int forca = 8;
+    private int cura = 3;
     private int mana = 10;
     private int moedas = 0;
     private int experiencia = 0;
@@ -31,72 +31,56 @@ public class Heroi implements Combatente {
         if (ataque == "Normal") {
             if (dado == 20) {
                 alvo.receberDano(this.forca * 2);
-                return "Dano Critico! Dano: " + (this.forca * 2) + " pontos de vida";
-            } else if (dado >= 15 && dado <= 19) {
-                alvo.receberDano((int) Math.round(this.forca * 1.5));
-                this.verificaMorte(alvo);
-                return "Ataque forte! Dano: " + (int) Math.round(this.forca * 1.5) + " pontos de vida";
-            } else if (dado >= 10 && dado <= 14) {
+                return "Acerto Critico! Dano: " + (this.forca * 2) + " pontos de vida";
+            } else if (dado >= 13 && dado <= 19) {
                 alvo.receberDano(this.forca);
                 this.verificaMorte(alvo);
-                return "Ataque normal. Dano: " + this.forca + " pontos de vida";
-            } else if (dado >= 4 && dado <= 9) {
+                return "Acerto cheio! Dano: " + this.forca + " pontos de vida";
+            } else if (dado >= 8 && dado <= 12) {
                 alvo.receberDano((int) Math.round(this.forca * 0.5));
                 this.verificaMorte(alvo);
-                return "Ataque fraco. Dano: " + (int) Math.round(this.forca * 0.5) + " pontos de vida";
-            } else if (dado == 2 || dado == 3) {
-                alvo.receberDano(1);
-                this.verificaMorte(alvo);
-                return "Passou de raspão! Dano: 1 ponto de vida";
+                return "De raspão. Dano: " + (int) Math.round(this.forca * 0.5) + " pontos de vida";
+            } else if (dado >= 2 && dado <= 7) {
+                return "Errou ataque";
             } else if (dado == 1) {
-                return "Erro critico! Dano: 0 pontos de vida";
+                this.vida -= 1;
+                this.verificaMorte(this);
+                return "Erro critico! 1 de dano em si mesmo!";
             } else {
                 return "Erro, valor incorreto.";
             }
         } else if (ataque == "Pesado") {
-            if (dado == 20) {
+            if (dado >= 18 && dado <= 20) {
                 alvo.receberDano((int) Math.round(this.forca * 2 * 1.5));
                 this.verificaMorte(alvo);
                 return "Dano Critico! Dano: " + (int) Math.round((this.forca * 2 * 1.5)) + " pontos de vida";
-            } else if (dado >= 18 && dado <= 19) {
-                alvo.receberDano((int) Math.round(this.forca * 1.5 * 1.5));
-                this.verificaMorte(alvo);
-                return "Ataque com precisão! Dano: " + (int) Math.round(this.forca * 1.5 * 1.5) + " pontos de vida";
             } else if (dado >= 15 && dado <= 17) {
-                alvo.receberDano((int) Math.round(this.forca * 1.5 * 1.5));
+                alvo.receberDano((int) Math.round(this.forca * 1.5));
                 this.verificaMorte(alvo);
-                return "Ataque pesado normal. Dano: " + (int) Math.round(this.forca * 1.5) + " pontos de vida";
+                return "Ataque com precisão! Dano: " + (int) Math.round(this.forca * 1.5) + " pontos de vida";
             } else if (dado >= 6 && dado <= 14) {
-                alvo.receberDano((int) Math.round(this.forca * 0.5 * 1.5));
+                alvo.receberDano((int) Math.round(this.forca * 1.5 * 0.5));
                 this.verificaMorte(alvo);
-                return "Ataque torto. Dano: " + (int) Math.round(this.forca * 0.5 * 1.5) + " pontos de vida";
+                return "Ataque pesado normal. Dano: " + (int) Math.round(this.forca * 1.5 * 0.5) + " pontos de vida";
             } else if (dado >= 2 || dado <= 5) {
-                alvo.receberDano(1);
-                this.verificaMorte(alvo);
-                return "Passou de raspão! Dano: 1 ponto de vida";
+                return "Errou o ataque!";
             } else if (dado == 1) {
-                return "Erro critico! Dano: 0 pontos de vida";
+                this.vida -= 1;
+                this.verificaMorte(this);
+                return "Erro critico! 1 de dano a si mesmo!";
             } else {
                 return "Erro, valor incorreto.";
             }
         } else {
-            if (dado == 20) {
-                alvo.receberDano((int) Math.round(this.forca * 2 * 1.1));
-                return "Jogou uma pedra gigante! Dano: " + (int) Math.round((this.forca * 2 * 1.1)) + " pontos de vida";
-            } else if (dado >= 15 && dado <= 19) {
-                alvo.receberDano((int) Math.round(this.forca * 1.5 * 1.1));
-                this.verificaMorte(alvo);
-                return "Jogou uma adaga! Dano: " + (int) Math.round(this.forca * 1.5 * 1.1) + " pontos de vida";
-            } else if (dado >= 10 && dado <= 14) {
+            if (dado >= 15 && dado <= 20) {
+                alvo.receberDano((int) Math.round(this.forca * 0.8 * 1.5));
+                return "Jogou uma pedra gigante! Dano: " + (int) Math.round((this.forca * 0.8 * 1.5))
+                        + " pontos de vida";
+            } else if (dado >= 3 && dado <= 14) {
                 alvo.receberDano((int) Math.round(this.forca * 0.8));
                 this.verificaMorte(alvo);
-                return "Jogou uma cadeira. Dano: " + (int) Math.round(this.forca * 1.1) + " pontos de vida";
-            } else if (dado >= 4 && dado <= 9) {
-                alvo.receberDano((int) Math.round(this.forca * 0.4));
-                this.verificaMorte(alvo);
-                return "Jogou uma padra de mal jeito. Dano: " + (int) Math.round(this.forca * 0.5 * 1.1)
-                        + " pontos de vida";
-            } else if (dado == 2 || dado == 3) {
+                return "Jogou uma adaga! Dano: " + (int) Math.round(this.forca * 0.8) + " pontos de vida";
+            } else if (dado == 2) {
                 return "Não encontrou nada para jogar";
             } else if (dado == 1) {
                 alvo.setCura("atirar");
@@ -105,7 +89,6 @@ public class Heroi implements Combatente {
                 return "Erro, valor incorreto.";
             }
         }
-
     }
 
     private void verificaMorte(Combatente alvo) {
@@ -119,12 +102,10 @@ public class Heroi implements Combatente {
         if (this.experiencia >= 100) {
             this.experiencia -= 100;
             this.nivel += 1;
-            this.forca +=1;
-            this.mana +=1;
+            this.forca += 1;
+            this.mana += 1;
         }
     }
-
-
 
     public String magia(Combatente alvo, int magia) {
         if (alvo.getVida() <= 0) {
@@ -237,7 +218,7 @@ public class Heroi implements Combatente {
     }
 
     public String getStatus() {
-        return this.getNome() + "está com " + getVida() + " pontos de vida. Também tem " + this.cura
+        return this.getNome() + " está com " + getVida() + " pontos de vida. Também tem " + this.cura
                 + " poções de cura no inventário.";
     }
 
